@@ -2,7 +2,7 @@
 
 ## Instructivos para el desarrollo de los trabajos prácticos.
 
-Notas sobre WSL 2 para Windows 11. [Ir a:](##notas-sobre-WSL2) 
+Notas sobre WSL 2 para Windows 11. [Ir a:](##-notas-sobre-WSL2) 
 
 ### Consideraciones generales
 
