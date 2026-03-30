@@ -1,5 +1,4 @@
-# Clase del 15/04
-Ejercicios Grupales
+## Ejercicios Grupales
 
 1) Modificar el código del programa Cliente Servidor Concurrente para que el cliente genere bucles de mensajes con el siguiente proceso y que el servidor devuelva los tiempos de ejecución y PID de hijos y padres asociados al clente.
 El proceso que debe realizar el servidor es el cálculo del factorial del nro que le enviamos desde el cliente.
