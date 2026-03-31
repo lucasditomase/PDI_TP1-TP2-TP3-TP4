@@ -16,7 +16,7 @@ Al final de cada clase utilizaremos Kahoot para fijar algunos conceptos y califi
 - Frameworks: Flask.
 - Documentación: Jupyter Notebook.
 - Control de versionado y repositorio: Github.
-- - Ir al siguiente repositorio: https://github.com/jaouret/PDI_2025-TP1-TP2-TP3-TP4.git
+- - Ir al siguiente repositorio: https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4.git
 
 ### Sistemas Operativos
 - Linux (Se recomienda la distribución Ubuntu 22 o superior, por su simplicidad de uso y disponibilidad de herramientas)
