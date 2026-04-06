@@ -1,0 +1,3 @@
+Este es un archivo de prueba pequeño.
+Contiene algunas líneas de texto.
+Para demostrar el envío de archivos.
