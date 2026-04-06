@@ -19,7 +19,7 @@ clientes_info = {}
 clientes_lock = threading.Lock()
 
 def mostrar_clientes():
-    """Muestra información de clientes conectados"""
+    """Muestra información de clientes conectados cada 10 segundos"""
     while True:
         time.sleep(10)  # Mostrar cada 10 segundos
         with clientes_lock:
@@ -27,7 +27,7 @@ def mostrar_clientes():
                 print("\n=== CLIENTES CONECTADOS (SELECT) ===")
                 for cliente_id, info in clientes_info.items():
                     estado = "ACTIVO" if info['activo'] else "DESCONECTADO"
-                    tiempo_conexion = info['tiempo_conexion'].strftime('%H:%M:%S')
+                    tiempo_conexion = info['conexion'].strftime('%H:%M:%S')
                     print(f"  {cliente_id} - Conectado: {tiempo_conexion} - Estado: {estado}")
                 print("=" * 45)
 
