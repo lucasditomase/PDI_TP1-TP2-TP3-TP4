@@ -1,6 +1,6 @@
 # PDI - TP 1 - A (Entrega: ver calendario en el Foro)
 
-Ir a: (https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP1/TP1_Cliente_Servidor_R1.ipynb)
+Ir a: (https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP1/TP1A_Cliente_Servidor_R1.ipynb)
 
 # PDI - TP 1 - B - Raw Sockets (Entrega: ver calendario en el Foro)
 Ir a: https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP1/TP1B_Raw_Sockets_R2.ipynb
