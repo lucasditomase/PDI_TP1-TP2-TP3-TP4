@@ -116,7 +116,7 @@ int main() {
     }
 
     if (active_sockets == 0) {
-        printf("❌ Error: No se pudo crear ningún socket\n");
+        printf("Error: No se pudo crear ningún socket\n");
         return 1;
     }
 

@@ -91,7 +91,7 @@ int main() {
             printf("✓ Primer paquete ICMP capturado y guardado\n\n");
             break; // solo capturamos uno para el ejemplo
         } else {
-            printf("❌ ERROR: No se pudo abrir el archivo icmp_packet.bin\n");
+            printf("ERROR: No se pudo abrir el archivo icmp_packet.bin\n");
             printf("Continuando con la captura...\n\n");
         }
     }

@@ -40,7 +40,7 @@ int main() {
 
         ssize_t packet_size = recvfrom(sockfd, buffer, sizeof(buffer), 0, &saddr, &saddr_len);
         if (packet_size < 0) {
-            printf("❌ Error al recibir paquete #%d\n", packet_count);
+            printf("Error al recibir paquete #%d\n", packet_count);
             continue;
         }
 
