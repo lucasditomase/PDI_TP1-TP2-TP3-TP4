@@ -20,17 +20,17 @@
 - Access Token (y opcionalmente Refresh Token)
   - La apliación accede a la API con el token
 
-En cada request HTTP:
+En cada request HTTP:      
 
-GET /api/v1/alumnos HTTP/1.1
-Host: api.uca.edu
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... (Header Authorization (RFC 6750))
-Content-Type: application/json
+GET /api/v1/alumnos HTTP/1.1   
+Host: api.uca.edu   
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9... (Header Authorization (RFC 6750))      
+Content-Type: application/json   
 
-Authorization: encabezado HTTP estándar
-Bearer: tipo de token (portador)
-<access_token>: credencial
-“quien posee el token, tiene acceso”
+- Authorization: encabezado HTTP estándar
+- Bearer: tipo de token (portador)
+- <access_token>: credencial
+- “quien posee el token, tiene acceso”
 
 La seguridad depende de:
 
