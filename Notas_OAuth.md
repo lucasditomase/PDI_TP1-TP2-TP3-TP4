@@ -32,6 +32,13 @@ Content-Type: application/json
 - <access_token>: credencial
 - “quien posee el token, tiene acceso”
 
+- {   
+  "access_token": "eyJhbGciOiJIUzI1NiIs...",   
+  "token_type": "Bearer",   
+  "expires_in": 3600,    
+  "scope": "read write"   
+}   
+
 La seguridad depende de:
 
 - HTTPS
