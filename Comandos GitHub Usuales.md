@@ -103,3 +103,14 @@ git push origin nombreBranch
 git pull origin nombreBranch > (para traer archivos)
 
 git branch [-a] > muestra el branch activo
+
+## Sincronizar tu fork con el repositorio original
+
+Si trabajás con tu fork en origin y el repositorio de la cátedra en upstream, podés actualizar ambos con:
+
+bash scripts/sync-upstream.sh
+
+Ese script hace lo siguiente:
+- trae cambios desde upstream/main
+- hace merge en main
+- sube el resultado a origin/main
