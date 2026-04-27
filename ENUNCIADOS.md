@@ -1,4 +1,4 @@
-# PDI - TP 1 - A (Entrega: ver calendario en el Foro)
+# PDI - TP 1 - A (Entrega: ver calendario en el GitHub)
 
 Ir a: (https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP1/TP1_Cliente_Servidor_R1.ipynb)
 
@@ -28,7 +28,7 @@ que se reciban. ( En este ejemplo se evitan los headers IP y TCP, y se imprime s
 TCP contenidos en el paquete ).
 
 
-# PDI - TP 1 - C - Cliente Servidor utilizando Sockets en Python. (Entrega: ver calendario en el Foro)
+# PDI - TP 1 - C - Cliente Servidor utilizando Sockets en Python. (Entrega: ver calendario en el GitHub)
 
 Ir a: https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP1/TP1C_Sockets_Python.ipynb
 
@@ -37,7 +37,7 @@ Para realizar programas Cliente Servidor con Python utlizamos la librería o paq
 La función socket() devuelve a socket object métodos que implementan las diversas llamadas al sistema de socket. Los tipos de parámetros tienen un nivel algo más alto que en la interfaz C, como con read() y write() en el uso de los archivos Python, la asignación del buffer es automática y la longitud del buffer está implícita en las operaciones de envío.
 
 
-# PDI - TP 2 - A - RestAPI - Servidores sin control de estado - Gestión de la Base de Datos (Entrega: ver calendario en el Foro)
+# PDI - TP 2 - A - RestAPI - Servidores sin control de estado - Gestión de la Base de Datos (Entrega: ver calendario en el GitHub)
 Instalar SQLite.
 
 Instalar Heidi SQL en Windows.
@@ -85,7 +85,7 @@ Notas:
 
 Verificar y mejorar.
 
-# PDI - TP 3 - A - SNMP (Entrega: ver calendario en el Foro)
+# PDI - TP 3 - A - SNMP (Entrega: ver calendario en el GitHub)
 
 Ir a: https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP2/TP2A_SNMP_R3.ipynb
 
@@ -93,7 +93,7 @@ Realizar ejercicios 1, 2, 3 y 4
 
 Describir lo que se observa en un informe.
 
-# PDI - TP 4 - A - RestAPI - IoT - MQTT (Entrega: ver calendario en el Foro)
+# PDI - TP 4 - A - RestAPI - IoT - MQTT (Entrega: ver calendario en el GitHub)
 
 Link al TP: https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP4/TP4_RestAPI_MQTT_R3.ipynb
 
