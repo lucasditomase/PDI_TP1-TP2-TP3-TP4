@@ -96,6 +96,9 @@ button {
         Estado: desconectado
     </div>
 
+    <input id="wsUrl" type="text" placeholder="URL WebSocket">
+    <button onclick="conectar()">Conectar</button>
+
     <input id="mensaje" type="text" placeholder="Escriba un mensaje">
     <button onclick="enviar()">Enviar</button>
 
@@ -106,8 +109,21 @@ button {
 const estado = document.getElementById("estado");
 const log = document.getElementById("log");
 const input = document.getElementById("mensaje");
+const wsUrlInput = document.getElementById("wsUrl");
 
-const ws = new WebSocket("ws://localhost:8080");
+let ws = null;
+
+function websocketUrlPorDefecto() {
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    let host = window.location.hostname;
+
+    if (host.includes("-5000.")) {
+        host = host.replace("-5000.", "-8080.");
+        return `${protocol}//${host}`;
+    }
+
+    return `${protocol}//${host}:8080`;
+}
 
 function agregarLog(texto, clase) {
     const linea = document.createElement("div");
@@ -117,35 +133,46 @@ function agregarLog(texto, clase) {
     log.scrollTop = log.scrollHeight;
 }
 
-ws.onopen = function() {
-    estado.textContent = "Estado: conectado a ws://localhost:8080";
-    estado.className = "conectado";
-    agregarLog("[SISTEMA] WebSocket abierto", "sistema");
+function conectar() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+    }
 
-    ws.send("Hola desde el navegador");
-    agregarLog("[CLIENTE] Hola desde el navegador", "enviado");
-};
+    const wsUrl = wsUrlInput.value.trim() || websocketUrlPorDefecto();
+    wsUrlInput.value = wsUrl;
 
-ws.onmessage = function(event) {
-    agregarLog("[SERVIDOR] " + event.data, "recibido");
-};
+    ws = new WebSocket(wsUrl);
 
-ws.onerror = function() {
-    agregarLog("[ERROR] Error en la conexión WebSocket", "sistema");
-};
+    ws.onopen = function() {
+        estado.textContent = `Estado: conectado a ${wsUrl}`;
+        estado.className = "conectado";
+        agregarLog("[SISTEMA] WebSocket abierto", "sistema");
 
-ws.onclose = function() {
-    estado.textContent = "Estado: WebSocket cerrado";
-    estado.className = "desconectado";
-    agregarLog("[SISTEMA] WebSocket cerrado", "sistema");
-};
+        ws.send("Hola desde el navegador");
+        agregarLog("[CLIENTE] Hola desde el navegador", "enviado");
+    };
+
+    ws.onmessage = function(event) {
+        agregarLog("[SERVIDOR] " + event.data, "recibido");
+    };
+
+    ws.onerror = function() {
+        agregarLog("[ERROR] Error en la conexión WebSocket", "sistema");
+    };
+
+    ws.onclose = function() {
+        estado.textContent = "Estado: WebSocket cerrado";
+        estado.className = "desconectado";
+        agregarLog("[SISTEMA] WebSocket cerrado", "sistema");
+    };
+}
 
 function enviar() {
     const mensaje = input.value.trim();
 
     if (mensaje === "") return;
 
-    if (ws.readyState === WebSocket.OPEN) {
+    if (ws && ws.readyState === WebSocket.OPEN) {
         ws.send(mensaje);
         agregarLog("[CLIENTE] " + mensaje, "enviado");
         input.value = "";
@@ -159,6 +186,8 @@ input.addEventListener("keydown", function(event) {
         enviar();
     }
 });
+
+conectar();
 </script>
 
 </body>

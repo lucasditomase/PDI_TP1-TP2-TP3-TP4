@@ -99,6 +99,68 @@ def obtener_registros():
     return datos
 
 
+def row_to_dict(row):
+    return {
+        "id": row[0],
+        "co2": row[1],
+        "temp": row[2],
+        "hum": row[3],
+        "fecha": row[4],
+        "lugar": row[5],
+        "altura": row[6],
+        "presion": row[7],
+        "presion_nm": row[8],
+        "temp_ext": row[9],
+        "humedad_ext": row[10],
+        "descripcion_clima": row[11]
+    }
+
+
+def obtener_registro_por_id(id):
+    conn = get_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+        SELECT
+            id,
+            co2,
+            temp,
+            hum,
+            fecha,
+            lugar,
+            altura,
+            presion,
+            presion_nm,
+            temp_ext,
+            humedad_ext,
+            descripcion_clima
+        FROM lectura_sensores
+        WHERE id = ?
+    """, (id,))
+
+    row = cursor.fetchone()
+    conn.close()
+
+    if not row:
+        return None
+
+    return row_to_dict(row)
+
+
+def parse_float(data, campo, default=0.0):
+    try:
+        return float(data.get(campo, default))
+    except (TypeError, ValueError):
+        raise ValueError(f"El campo {campo} debe ser numerico")
+
+
+def parse_int(data, campo, default=1):
+    try:
+        return int(data.get(campo, default))
+    except (TypeError, ValueError):
+        raise ValueError(f"El campo {campo} debe ser entero")
+
+
 
 # GEOLOCALIZACION + CLIMA
 
@@ -298,6 +360,16 @@ def api_datos():
     })
 
 
+@app.route("/api/data/<int:id>", methods=["GET"])
+def api_obtener_uno(id):
+    registro = obtener_registro_por_id(id)
+
+    if not registro:
+        return jsonify({"error": "Registro no encontrado"}), 404
+
+    return jsonify({"registro": registro})
+
+
 @app.route("/api/clima")
 def api_clima():
     ciudad = request.args.get("ciudad")
@@ -315,14 +387,13 @@ def api_capturar():
     if not data:
         return jsonify({"error": "Debe enviar JSON"}), 400
 
-    lugar = data.get("lugar", "Sin definir")
-    altura = float(data.get("altura", 0))
-    ciudad = data.get("ciudad", "").strip()
-    modo = data.get("modo", "auto")
-    cantidad = max(1, int(data.get("cantidad", 1)))
-    intervalo = max(0.0, float(data.get("intervalo", 0)))
-
     try:
+        lugar = data.get("lugar", "Sin definir")
+        altura = parse_float(data, "altura", 0)
+        ciudad = data.get("ciudad", "").strip()
+        modo = data.get("modo", "auto")
+        cantidad = max(1, parse_int(data, "cantidad", 1))
+        intervalo = max(0.0, parse_float(data, "intervalo", 0))
         lecturas = []
 
         for i in range(cantidad):
@@ -343,7 +414,54 @@ def api_capturar():
     except Exception as e:
         return jsonify({
             "error": str(e)
-        }), 500
+        }), 400
+
+
+@app.route("/api/data/<int:id>", methods=["PUT"])
+def api_actualizar(id):
+    data = request.get_json()
+
+    if not data:
+        return jsonify({"error": "Debe enviar JSON"}), 400
+
+    registro = obtener_registro_por_id(id)
+
+    if not registro:
+        return jsonify({"error": "Registro no encontrado"}), 404
+
+    campos_editables = [
+        "co2",
+        "temp",
+        "hum",
+        "fecha",
+        "lugar",
+        "altura",
+        "presion",
+        "presion_nm",
+        "temp_ext",
+        "humedad_ext",
+        "descripcion_clima"
+    ]
+
+    campos = [campo for campo in campos_editables if campo in data]
+
+    if not campos:
+        return jsonify({"error": "No hay campos validos para actualizar"}), 400
+
+    set_clause = ", ".join(f"{campo} = ?" for campo in campos)
+    valores = [data[campo] for campo in campos]
+    valores.append(id)
+
+    conn = get_connection()
+    cursor = conn.cursor()
+    cursor.execute(f"UPDATE lectura_sensores SET {set_clause} WHERE id = ?", valores)
+    conn.commit()
+    conn.close()
+
+    return jsonify({
+        "mensaje": "Registro actualizado correctamente",
+        "registro": obtener_registro_por_id(id)
+    })
 
 
 @app.route("/api/data/<int:id>", methods=["DELETE"])

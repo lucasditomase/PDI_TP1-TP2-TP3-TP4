@@ -20,6 +20,13 @@ sensors = [
 ]
 
 
+def next_sensor_id():
+    if not sensors:
+        return 0
+
+    return max(sensor["id"] for sensor in sensors) + 1
+
+
 @app.route("/")
 def index():
     return """
@@ -213,7 +220,7 @@ def create_sensor():
     data = request.get_json()
 
     new_sensor = {
-        "id": len(sensors),
+        "id": next_sensor_id(),
         "co2": data.get("co2"),
         "temp": data.get("temp"),
         "hum": data.get("hum"),

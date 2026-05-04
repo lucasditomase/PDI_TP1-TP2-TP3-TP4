@@ -20,7 +20,7 @@ La API REST se implementa con rutas para una coleccion de sensores:
 - `PUT /sensors/<id>`: modifica un sensor existente.
 - `DELETE /sensors/<id>`: elimina un sensor.
 
-El archivo `Prueba_Flask_Routes_02.py` contiene una version en memoria. El archivo `sensor_editar_tabla_r1B_geo.py` extiende la idea usando SQLite para persistencia.
+El archivo `Prueba_Flask_Routes_02.py` contiene una version en memoria. El archivo `sensor_editar_tabla_r1B_geo.py` extiende la idea usando SQLite para persistencia, con rutas para listar, consultar, crear capturas, actualizar y borrar registros.
 
 ## 3. Manejo seguro de IDs
 
@@ -56,6 +56,13 @@ La funcion `simular_lectura()` genera valores aleatorios de CO2, temperatura y h
 La integracion real con OpenWeather queda preparada mediante `OPENWEATHER_API_KEY`. Hasta crear la API key, el sistema usa un modo simulado para no bloquear el resto del TP.
 
 Cuando se configure la variable de entorno, se podra usar `modo=auto` para intentar obtener datos reales por ciudad o por geolocalizacion IP.
+
+Ejemplo:
+
+```bash
+export OPENWEATHER_API_KEY="TU_API_KEY"
+python3 sensor_editar_tabla_r1B_geo.py
+```
 
 ## 8. Arquitectura Cliente Servidor REST
 
@@ -94,6 +101,17 @@ El repo ya incluye una base para WebSocket:
 
 - `server_ws.js`: servidor WebSocket con Node.js y `ws`.
 - `cliente.py`: cliente Flask que se conecta a un WebSocket.
+- `cliente_ws.py`: cliente visual simple desde navegador.
+- `cliente_wsp.py`: cliente visual con monitor del protocolo.
 - `Cliente_Servidor_Websockets_R2.ipynb`: notebook de referencia.
 
 Esto cubre la parte de comunicacion en tiempo real, distinta del modelo REST porque mantiene una conexion abierta para enviar y recibir mensajes sin una solicitud HTTP nueva por cada intercambio.
+
+Para ejecutarlo:
+
+```bash
+node server_ws.js
+python3 cliente_wsp.py
+```
+
+En Codespaces, el cliente visual calcula una URL WebSocket compatible con puertos reenviados y tambien permite editarla manualmente desde la pagina.

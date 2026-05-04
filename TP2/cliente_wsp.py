@@ -115,6 +115,9 @@ button {
             Estado: desconectado
         </div>
 
+        <input id="wsUrl" type="text" placeholder="URL WebSocket">
+        <button onclick="conectarWebSocket()">Conectar</button>
+
         <input id="mensaje" type="text" placeholder="Escriba un mensaje">
         <button onclick="enviar()">Enviar</button>
 
@@ -133,8 +136,21 @@ const estado = document.getElementById("estado");
 const log = document.getElementById("log");
 const proto = document.getElementById("proto");
 const input = document.getElementById("mensaje");
+const wsUrlInput = document.getElementById("wsUrl");
 
 let ws = null;
+
+function websocketUrlPorDefecto() {
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    let host = window.location.hostname;
+
+    if (host.includes("-5011.")) {
+        host = host.replace("-5011.", "-8080.");
+        return `${protocol}//${host}`;
+    }
+
+    return `${protocol}//${host}:8080`;
+}
 
 function addLog(texto, clase) {
     const linea = document.createElement("div");
@@ -153,15 +169,22 @@ function addProto(texto, clase) {
 }
 
 function conectarWebSocket() {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.close();
+    }
+
+    const wsUrl = wsUrlInput.value.trim() || websocketUrlPorDefecto();
+    wsUrlInput.value = wsUrl;
+
     addProto("HTTP GET /  → Flask entrega esta página HTML", "sys");
     addProto("HTTP 200 OK → HTML recibido por el navegador", "sys");
-    addProto("JavaScript ejecuta: new WebSocket('ws://localhost:8080')", "sys");
+    addProto(`JavaScript ejecuta: new WebSocket('${wsUrl}')`, "sys");
     addProto("Solicitando HTTP Upgrade a WebSocket...", "sys");
 
-    ws = new WebSocket("ws://localhost:8080");
+    ws = new WebSocket(wsUrl);
 
     ws.onopen = function() {
-        estado.textContent = "Estado: conectado a ws://localhost:8080";
+        estado.textContent = `Estado: conectado a ${wsUrl}`;
         estado.className = "conectado";
 
         addProto("GET / HTTP/1.1", "sys");
