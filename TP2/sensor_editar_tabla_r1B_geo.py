@@ -5,6 +5,7 @@ import random
 import sqlite3
 import requests
 import geocoder
+import time
 
 from datetime import datetime
 from flask import Flask, render_template, jsonify, request
@@ -14,9 +15,9 @@ app = Flask(__name__)
 
 DB_NAME = "db.datos_sensores"
 
-# Mejor usar variable de entorno:
+# Usar variable de entorno:
 # export OPENWEATHER_API_KEY="TU_API_KEY"
-OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "C2f66bd561ebc7e4bde0d2a8951df0098")
+OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "").strip()
 
 
 
@@ -102,7 +103,29 @@ def obtener_registros():
 # GEOLOCALIZACION + CLIMA
 
 
+def clima_simulado(ciudad="Buenos Aires"):
+    return {
+        "lat": -34.61,
+        "lon": -58.38,
+        "temp_ext": round(random.uniform(15, 29), 2),
+        "presion": round(random.uniform(1002, 1022), 2),
+        "humedad_ext": round(random.uniform(45, 85), 2),
+        "descripcion_clima": f"simulado sin API key ({ciudad or 'ubicacion local'})",
+        "fuente": "simulada"
+    }
+
+
+def validar_api_key():
+    if not OPENWEATHER_API_KEY:
+        raise RuntimeError(
+            "Falta configurar OPENWEATHER_API_KEY. "
+            "Mientras tanto se puede usar modo=simulado."
+        )
+
+
 def geo_latlon():
+    validar_api_key()
+
     g = geocoder.ip("me")
 
     if not g.latlng:
@@ -138,11 +161,14 @@ def geo_latlon():
         "temp_ext": temp_ext,
         "presion": presion,
         "humedad_ext": humedad_ext,
-        "descripcion_clima": descripcion_clima
+        "descripcion_clima": descripcion_clima,
+        "fuente": "openweathermap"
     }
 
 
 def clima_por_ciudad(ciudad):
+    validar_api_key()
+
     url = (
         "https://api.openweathermap.org/data/2.5/weather?"
         f"q={ciudad}"
@@ -166,8 +192,23 @@ def clima_por_ciudad(ciudad):
         "temp_ext": main["temp"],
         "presion": main["pressure"],
         "humedad_ext": main["humidity"],
-        "descripcion_clima": weather["description"]
+        "descripcion_clima": weather["description"],
+        "fuente": "openweathermap"
     }
+
+
+def obtener_clima(ciudad="", modo="auto"):
+    if modo == "simulado":
+        return clima_simulado(ciudad)
+
+    try:
+        if ciudad:
+            return clima_por_ciudad(ciudad)
+        return geo_latlon()
+    except Exception as exc:
+        clima = clima_simulado(ciudad)
+        clima["advertencia"] = str(exc)
+        return clima
 
 
 
@@ -260,19 +301,11 @@ def api_datos():
 @app.route("/api/clima")
 def api_clima():
     ciudad = request.args.get("ciudad")
+    modo = request.args.get("modo", "auto")
 
-    try:
-        if ciudad:
-            clima = clima_por_ciudad(ciudad)
-        else:
-            clima = geo_latlon()
+    clima = obtener_clima(ciudad or "", modo)
 
-        return jsonify(clima)
-
-    except Exception as e:
-        return jsonify({
-            "error": str(e)
-        }), 500
+    return jsonify(clima)
 
 
 @app.route("/api/capturar", methods=["POST"])
@@ -285,19 +318,26 @@ def api_capturar():
     lugar = data.get("lugar", "Sin definir")
     altura = float(data.get("altura", 0))
     ciudad = data.get("ciudad", "").strip()
+    modo = data.get("modo", "auto")
+    cantidad = max(1, int(data.get("cantidad", 1)))
+    intervalo = max(0.0, float(data.get("intervalo", 0)))
 
     try:
-        if ciudad:
-            clima = clima_por_ciudad(ciudad)
-        else:
-            clima = geo_latlon()
+        lecturas = []
 
-        lectura = simular_lectura(lugar, altura, clima)
-        lectura = insertar_lectura(lectura)
+        for i in range(cantidad):
+            clima = obtener_clima(ciudad, modo)
+            lectura = simular_lectura(lugar, altura, clima)
+            lectura = insertar_lectura(lectura)
+            lecturas.append(lectura)
+
+            if i < cantidad - 1 and intervalo > 0:
+                time.sleep(intervalo)
 
         return jsonify({
-            "mensaje": "Lectura capturada correctamente",
-            "lectura": lectura
+            "mensaje": "Lecturas capturadas correctamente",
+            "cantidad": len(lecturas),
+            "lecturas": lecturas
         }), 201
 
     except Exception as e:
