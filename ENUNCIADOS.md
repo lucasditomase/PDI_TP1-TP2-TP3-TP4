@@ -1,6 +1,6 @@
 # PDI - TP 1 - A (Entrega: ver calendario en el GitHub)
 
-Ir a: (https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP1/TP1A_Cliente_Servidor_R1.ipynb)
+Ir a: (https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP1/TP1_Cliente_Servidor_R1.ipynb)
 
 # PDI - TP 1 - B - Raw Sockets (Entrega: ver calendario en el Foro)
 Ir a: https://github.com/jaouret/PDI_TP1-TP2-TP3-TP4/blob/main/TP1/TP1B_Raw_Sockets_R2.ipynb
@@ -51,6 +51,8 @@ Desde una terminal crear la base de datos, si no existe SQLite la crea automáti
 La idea es crear un repositorio de datos para recibir datos de sensores.
 
 Conectarse a la base de datos desde el gestor elegido.
+
+### Es posible obtener datos reales del sensor Airlink instalado en la UCA: [http://calidadaire.uca.edu.ar](http://calidadaire.uca.edu.ar)
 
 Crear una tabla para recibir los datos de los sensores.
 
