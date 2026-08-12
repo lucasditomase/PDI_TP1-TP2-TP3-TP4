@@ -57,7 +57,7 @@ if __name__ == '__main__':
     create_table()
 
     temp_ext, presion, humedad_ext, descripcion_clima = geo_latlon()
-    print("Resultados= ", temp_ext, presion, humedad_ext, descripcion_clima)
+    print("Resultados meteorológicos obtenidos correctamente.")
 
     while True:
         try:
