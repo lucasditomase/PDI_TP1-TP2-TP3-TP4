@@ -1,4 +1,5 @@
 import os
+import logging
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import OperationalError
@@ -70,8 +71,9 @@ def mostrar_primer_registro():
         if not primer_registro:
             return jsonify({'mensaje': 'No se encontraron datos'}), 404
         return jsonify(primer_registro.to_dict())
-    except Exception as e:
-        return jsonify({'error': 'Error al buscar datos', 'detalle': str(e)}), 500
+    except Exception:
+        app.logger.exception("Error al buscar el primer registro")
+        return jsonify({'error': 'Error interno del servidor'}), 500
 
 @app.route('/api/directorio-db')
 def directorio_db():
