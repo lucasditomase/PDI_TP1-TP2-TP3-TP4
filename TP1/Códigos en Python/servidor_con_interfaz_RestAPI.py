@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for
 import time
 import threading
+import os
 
 app = Flask(__name__)
 
@@ -64,5 +65,6 @@ def servidor_loop():
 # ========================
 if __name__ == "__main__":
     threading.Thread(target=servidor_loop, daemon=True).start()
-    app.run(debug=True, port=5000)
+    debug_mode = os.getenv("FLASK_DEBUG", "false").strip().lower() in ("1", "true", "yes", "on")
+    app.run(debug=debug_mode, port=5000)
 
