@@ -411,10 +411,11 @@ def api_capturar():
             "lecturas": lecturas
         }), 201
 
-    except Exception as e:
+    except Exception:
+        app.logger.exception("Error inesperado en /api/capturar")
         return jsonify({
-            "error": str(e)
-        }), 400
+            "error": "Error interno del servidor"
+        }), 500
 
 
 @app.route("/api/data/<int:id>", methods=["PUT"])
