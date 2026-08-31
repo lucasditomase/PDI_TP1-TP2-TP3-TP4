@@ -96,9 +96,10 @@ def insertar_dato_prueba():
         db.session.add(datos_prueba)
         db.session.commit()
         return jsonify({'mensaje': 'Datos insertados correctamente'})
-    except Exception as e:
+    except Exception:
         db.session.rollback()
-        return jsonify({'error': 'Error al insertar datos', 'detalle': str(e)}), 500
+        app.logger.exception("Error al insertar datos")
+        return jsonify({'error': 'Error interno del servidor'}), 500
 
 if __name__ == '__main__':
     print("Directorio:", os.getcwd())
