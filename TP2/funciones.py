@@ -35,7 +35,7 @@ def geo_latlon():
     else:
         complete_url = base_url + "lat=" + str(lat) + "&lon=" + str(
             lon) + "&appid=" + api_key + "&units=metric" + "&lang=es"
-    print(complete_url)
+    print("Consultando servicio meteorológico...")
     # get method of requests module
     # return response object
     response = requests.get(complete_url)
@@ -44,7 +44,7 @@ def geo_latlon():
     # convert json format data into
     # python format data
     x = response.json()
-    print(x)
+    print("Respuesta recibida del servicio meteorológico.")
     print(x["cod"])
 
     # Now x contains list of nested dictionaries
