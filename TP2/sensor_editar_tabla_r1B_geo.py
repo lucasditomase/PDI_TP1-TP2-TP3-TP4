@@ -267,9 +267,10 @@ def obtener_clima(ciudad="", modo="auto"):
         if ciudad:
             return clima_por_ciudad(ciudad)
         return geo_latlon()
-    except Exception as exc:
+    except Exception:
+        app.logger.exception("Error al obtener clima real")
         clima = clima_simulado(ciudad)
-        clima["advertencia"] = str(exc)
+        clima["advertencia"] = "No se pudo obtener el clima en tiempo real."
         return clima
 
 
