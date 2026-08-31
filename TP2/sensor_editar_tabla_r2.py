@@ -102,4 +102,5 @@ def insertar_dato_prueba():
 
 if __name__ == '__main__':
     print("Directorio:", os.getcwd())
-    app.run(debug=True, port=5010)
+    debug_mode = os.getenv('FLASK_DEBUG', '0').lower() in ('1', 'true', 'yes', 'on')
+    app.run(debug=debug_mode, port=5010)
