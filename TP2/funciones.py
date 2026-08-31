@@ -78,15 +78,8 @@ def geo_latlon():
         # the 0th index of z
         descripcion_clima = z[0]["description"]
 
-        # print following values
-        print(" Temperatura = " +
-              str(temp_ext)[0:5] + " C" +
-              "\n Presión Atmosférica = " +
-              str(presion) + " hPa" +
-              "\n Humedad  = " +
-              str(humedad_ext) + " %" +
-              "\n Cielo = " +
-              str(descripcion_clima))
+        # Evitar logging en claro de datos derivados de la respuesta externa
+        print("Datos meteorológicos obtenidos correctamente.")
 
     else:
         print(" Ciudad no encontrada ")
