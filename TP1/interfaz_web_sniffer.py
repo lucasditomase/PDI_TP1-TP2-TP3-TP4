@@ -280,4 +280,4 @@ if __name__ == '__main__':
     print("=== INTERFAZ WEB DEL SNIFFER TP 1B ===")
     print("Acceda a http://localhost:5000 para ver la interfaz")
     print("Presione Ctrl+C para detener el servidor web")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=False, host='0.0.0.0', port=5000)
