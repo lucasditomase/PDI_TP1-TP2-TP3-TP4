@@ -61,8 +61,9 @@ def mostrar_todos_los_datos():
         if not records:
             return jsonify({'mensaje': 'No se encontraron datos'}), 404
         return jsonify([record.to_dict() for record in records])
-    except Exception as e:
-        return jsonify({'error': 'Error al buscar datos', 'detalle': str(e)}), 500
+    except Exception:
+        app.logger.exception("Error al buscar datos")
+        return jsonify({'error': 'Error interno del servidor'}), 500
 
 @app.route('/api/primer-registro')
 def mostrar_primer_registro():
