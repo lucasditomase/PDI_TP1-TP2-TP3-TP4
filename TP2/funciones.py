@@ -45,7 +45,7 @@ def geo_latlon():
     # python format data
     x = response.json()
     print("Respuesta recibida del servicio meteorológico.")
-    print(x["cod"])
+    print("Código de respuesta procesado.")
 
     # Now x contains list of nested dictionaries
     # Check the value of "cod" key is equal to
