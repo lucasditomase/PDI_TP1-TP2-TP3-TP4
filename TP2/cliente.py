@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, escape
 from websocket import WebSocketApp
 import threading
 
@@ -55,7 +55,8 @@ def send():
     message = request.form['message']
     if ws and ws.sock and ws.sock.connected:
         ws.send(message)
-        return f"Mensaje enviado: {message}<br><a href='/'>Enviar otro</a>"
+        safe_message = escape(message)
+        return f"Mensaje enviado: {safe_message}<br><a href='/'>Enviar otro</a>"
     else:
         return "Error: WebSocket no está conectado.<br><a href='/'>Reintentar</a>"
 
