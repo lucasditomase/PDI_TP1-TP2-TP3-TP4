@@ -491,4 +491,5 @@ def borrar(id):
 
 if __name__ == "__main__":
     create_table()
-    app.run(host="0.0.0.0", port=5012, debug=True)
+    debug_mode = os.getenv("FLASK_DEBUG", "").lower() in ("1", "true", "yes", "on")
+    app.run(host="0.0.0.0", port=5012, debug=debug_mode)
